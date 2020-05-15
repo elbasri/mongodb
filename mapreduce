@@ -2,9 +2,15 @@
 var map = function() {  
     var body = this.body;
     if (body) { 
-        body = body.toLowerCase().split(" "); 
+        str=body.replace(/<[^>]*>/g, '');
+        str=str.replace(/<\s*br\/*>/gi, "\n");
+        str=str.replace(/<\s*a.*href="(.*?)".*>(.*?)<\/a>/gi, " $2 (Link->$1) ");
+        str=str.replace(/<\s*\/*.+?>/ig, "\n");
+        str=str.replace(/ {2,}/gi, " ");
+        str=str.replace(/\n+\s*/gi, "\n\n");
+        body = str.toLowerCase().split(" "); 
         for (var i = body.length - 1; i >= 0; i--) {
-            if (body[i])  {
+            if (body[i] && body[i].length>4)  {
                emit(body[i], 1);
             }
         }
@@ -16,7 +22,7 @@ var map = function() {
     if (title) { 
         title = title.toLowerCase().split(" "); 
         for (var i = title.length - 1; i >= 0; i--) {
-            if (title[i] && title[i].length>3)  {
+            if (title[i] && title[i].length>4)  {
                emit(title[i], 1);
             }
         }
